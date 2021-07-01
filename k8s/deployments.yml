@@ -23,10 +23,16 @@ spec:
       terminationGracePeriodSeconds: 1
       containers:
         - name: counter-pod
-          image: vaddimart/playwithk8s:1.0
+          image: vaddimart/playwithk8s:2.0
           imagePullPolicy: Always
           ports:
             - containerPort: 5000
+          env:
+            - name: FLASK_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: mysecret
+                  key: flasksecret
 ---
 apiVersion: apps/v1
 kind: Deployment
