@@ -1,0 +1,5 @@
+.idea/
+Dockerfile
+README.md
+k8s/
+requirements.in
