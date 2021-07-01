@@ -1,4 +1,5 @@
 import os
+import platform
 import time
 import uuid
 
@@ -24,7 +25,10 @@ def index():
                 raise err
             retries -= 1
             time.sleep(0.5)
-    return f"You visited this site {counter} times"
+    return f"""<div>
+                 <h4>You visited this site {counter} times</h4>
+                 <h5>Hostname: <strong>{platform.node()}</strong></h5>
+               </div>"""
 
 
 if __name__ == "__main__":
