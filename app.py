@@ -8,7 +8,7 @@ from flask import Flask, session
 
 app = Flask(__name__)
 app.config.update(SECRET_KEY=os.environ.get("FLASK_SECRET_KEY", "some strong secret key"))
-cache = redis.Redis(host="redis", port=6379)
+cache = redis.Redis(host=os.environ.get("REDIS_HOST", "redis"), port=os.environ.get("REDIS_PORT", 6379))
 
 
 @app.route("/")
@@ -32,4 +32,4 @@ def index():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", debug=True)
+    app.run(host=os.environ.get("REDIS_HOST", "localhost"), port=os.environ.get("REDIS_PORT", 5000), debug=True)
