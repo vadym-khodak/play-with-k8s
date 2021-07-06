@@ -15,7 +15,7 @@ cache = redis.Redis(host="redis", port=6379)
 def index():
     session["uid"] = session.get("uid") or uuid.uuid4().hex
 
-    retries = 5
+    retries = 3
     while True:
         try:
             counter = cache.incr(session["uid"])
@@ -24,7 +24,7 @@ def index():
             if retries == 0:
                 raise err
             retries -= 1
-            time.sleep(0.5)
+            time.sleep(0.1)
     return f"""<div>
                  <h4>You visited this site {counter} times</h4>
                  <h5>Hostname: <strong>{platform.node()}</strong></h5>
