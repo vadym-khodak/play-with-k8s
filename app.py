@@ -7,8 +7,8 @@ import redis
 from flask import Flask, session
 
 app = Flask(__name__)
-app.config.update(SECRET_KEY=os.environ.get("FLASK_SECRET_KEY", "some strong secret key"))
-cache = redis.Redis(host=os.environ.get("REDIS_HOST", "redis"), port=os.environ.get("REDIS_PORT", 6379))
+app.config.update(SECRET_KEY=os.getenv("FLASK_SECRET_KEY", "some strong secret key"))
+cache = redis.Redis(host=os.getenv("REDIS_HOST", "redis"), port=os.getenv("REDIS_PORT", 6379))
 
 
 @app.route("/")
@@ -32,4 +32,4 @@ def index():
 
 
 if __name__ == "__main__":
-    app.run(host=os.environ.get("FLASK_HOST", "localhost"), port=os.environ.get("FLASK_PORT", 5000), debug=True)
+    app.run(host=os.getenv("FLASK_HOST", "0.0.0.0"), port=os.getenv("FLASK_PORT", 5000), debug=True)
