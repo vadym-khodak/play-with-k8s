@@ -11,6 +11,14 @@ app.config.update(SECRET_KEY=os.getenv("FLASK_SECRET_KEY", "some strong secret k
 cache = redis.Redis(host=os.getenv("REDIS_HOST", "redis"), port=os.getenv("REDIS_PORT", 6379))
 
 
+@app.route("/ready")
+def ready():
+    try:
+        return str(cache.ping()), 200
+    except redis.exceptions.ConnectionError:
+        return "Redis is not ready", 400
+
+
 @app.route("/")
 def index():
     session["uid"] = session.get("uid") or uuid.uuid4().hex
