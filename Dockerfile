@@ -2,7 +2,8 @@ FROM python:3.9-alpine
 
 MAINTAINER Vadym Khodak
 
-ADD . /src
+COPY app.py /src/app.py
+COPY requirements.txt /src/requirements.txt
 
 WORKDIR /src
 

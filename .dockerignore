@@ -4,3 +4,5 @@ README.md
 k8s/
 requirements.in
 client/
+.env
+.env.development
