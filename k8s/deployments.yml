@@ -47,11 +47,11 @@ kind: Deployment
 metadata:
   name: redis-deploy
   labels:
-    app: web-app
+    app: redis-be
 spec:
   selector:
     matchLabels:
-      app: web-app
+      app: redis-be
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -60,7 +60,7 @@ spec:
   template:
     metadata:
       labels:
-        app: web-app
+        app: redis-be
     spec:
       terminationGracePeriodSeconds: 1
       containers:
