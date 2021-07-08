@@ -8,7 +8,7 @@ from flask import Flask, session
 
 app = Flask(__name__)
 app.config.update(SECRET_KEY=os.getenv("FLASK_SECRET_KEY", "some strong secret key"))
-cache = redis.Redis(host=os.getenv("REDIS_HOST", "redis"), port=os.getenv("REDIS_PORT", 6379))
+cache = redis.Redis(host=os.getenv("REDIS_HOST", "redis"), port=int(os.getenv("REDIS_PORT", 6379)))
 
 
 @app.route("/ready")
@@ -32,7 +32,7 @@ def index():
             if retries == 0:
                 raise err
             retries -= 1
-            time.sleep(0.1)
+            time.sleep(float(os.getenv("REDIS_SLEEP_TIME", 0.1)))
     return f"""<div>
                  <h4>You visited this site {counter} times</h4>
                  <h5>Hostname: <strong>{platform.node()}</strong></h5>
@@ -40,4 +40,4 @@ def index():
 
 
 if __name__ == "__main__":
-    app.run(host=os.getenv("FLASK_HOST", "0.0.0.0"), port=os.getenv("FLASK_PORT", 5000), debug=True)
+    app.run(host=os.getenv("FLASK_HOST", "0.0.0.0"), port=int(os.getenv("FLASK_PORT", 5000)), debug=True)
