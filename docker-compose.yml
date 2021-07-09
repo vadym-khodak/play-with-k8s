@@ -1,4 +1,12 @@
 version: "3.5"
+
+networks:
+  app-net:
+  test-net:
+
+volumes:
+  app-vol:
+
 services:
   web-app:
     build: .
@@ -36,8 +44,29 @@ services:
     networks:
       - app-net
 
-networks:
-  app-net:
 
-volumes:
-  app-vol:
+#######################
+#        TESTS        #
+#######################
+  test_db:
+    image: "redis:alpine"
+    networks:
+      - test-net
+
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    ports:
+      - target: 5003
+        published: 5003
+    environment:
+      FLASK_SECRET_KEY: ${FLASK_SECRET_KEY}
+      REDIS_HOST: test_db
+      REDIS_PORT: 6379
+      FLASK_HOST: 127.0.0.1
+      FLASK_PORT: 5003
+    networks:
+      - test-net
+    depends_on:
+      - test_db

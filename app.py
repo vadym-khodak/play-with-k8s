@@ -9,8 +9,9 @@ from flask_cors import CORS, cross_origin
 app = Flask(__name__)
 cors = CORS(app)
 app.config.update(SECRET_KEY=os.getenv("FLASK_SECRET_KEY", "some strong secret key"))
-cache = redis.Redis(host=os.getenv("REDIS_HOST", "redis"), port=os.getenv("REDIS_PORT", 6379))
 app.config['CORS_HEADERS'] = 'Content-Type'
+cache = redis.Redis(host=os.getenv("REDIS_HOST", "redis"), port=int(os.getenv("REDIS_PORT", 6379)))
+
 
 
 @app.route("/ready")
@@ -35,10 +36,10 @@ def index():
             if retries == 0:
                 raise err
             retries -= 1
-            time.sleep(0.1)
+            time.sleep(float(os.getenv("REDIS_SLEEP_TIME", 0.1)))
 
     return {"counter": counter, "hostName": platform.node(), "userId": session["uid"]}
 
 
 if __name__ == "__main__":
-    app.run(host=os.getenv("FLASK_HOST", "0.0.0.0"), port=os.getenv("FLASK_PORT", 5000), debug=True)
+    app.run(host=os.getenv("FLASK_HOST", "0.0.0.0"), port=int(os.getenv("FLASK_PORT", 5000)), debug=True)

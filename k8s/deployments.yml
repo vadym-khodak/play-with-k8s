@@ -23,7 +23,7 @@ spec:
       terminationGracePeriodSeconds: 1
       containers:
         - name: counter-pod
-          image: vaddimart/playwithk8s:5.0
+          image: vaddimart/playwithk8s:5.1
           imagePullPolicy: Always
           ports:
             - containerPort: 5000
@@ -41,6 +41,8 @@ spec:
               value: 0.0.0.0
             - name: FLASK_PORT
               value: "5000"
+            - name: REDIS_SLEEP_TIME
+              value: "0.1"
           readinessProbe:
             httpGet:
               path: /ready
