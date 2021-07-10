@@ -23,8 +23,18 @@ jobs:
         pip install flake8 pytest
         pip install black
     - name: Lint with flake8
-      run: |
-        flake8 .
+      run: flake8 .
     - name: Black check
-      run: |
-        black . --check
+      run: black . --check
+  tests:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+    - name: Test Flask app
+      run: make test
