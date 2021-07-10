@@ -2,7 +2,6 @@ import os
 import platform
 import time
 import uuid
-import sys
 
 import redis
 from flask import Flask, session
