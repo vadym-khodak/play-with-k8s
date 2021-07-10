@@ -33,10 +33,13 @@ def index():
                 raise err
             retries -= 1
             time.sleep(float(os.getenv("REDIS_SLEEP_TIME", 0.1)))
-    return f"""<div><h4>You visited this site {counter} times</h4><h5>Hostname: <strong>{platform.node()}</strong></h5></div>"""
+    return f"""<div>
+                 <h4>You visited this site {counter} times</h4>
+                 <h5>Hostname: <strong>{platform.node()}</strong></h5>
+               </div>"""
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run(
         host=os.getenv("FLASK_HOST", "0.0.0.0"), port=int(os.getenv("FLASK_PORT", 5000)), debug=True
     )
