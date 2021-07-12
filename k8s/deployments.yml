@@ -56,6 +56,36 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  name: fe-deploy
+  labels:
+    app: web-app
+spec:
+  selector:
+    matchLabels:
+      app: web-app
+  replicas: 5
+  minReadySeconds: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: web-app
+    spec:
+      terminationGracePeriodSeconds: 1
+      containers:
+        - name: fe-pod
+          image: vaddimart/playwithk8s:fe.1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
   name: redis-deploy
   labels:
     app: redis-be

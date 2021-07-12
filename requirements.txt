@@ -4,9 +4,16 @@
 #
 #    pip-compile
 #
+--index-url https://artifactory.int.datarobot.com/artifactory/api/pypi/python-all/simple
+--trusted-host artifactory.int.datarobot.com
+
 click==8.0.1
     # via flask
 flask==2.0.1
+    # via
+    #   -r requirements.in
+    #   flask-cors
+flask-cors==3.0.10
     # via -r requirements.in
 itsdangerous==2.0.1
     # via flask
@@ -16,5 +23,7 @@ markupsafe==2.0.1
     # via jinja2
 redis==3.5.3
     # via -r requirements.in
+six==1.16.0
+    # via flask-cors
 werkzeug==2.0.1
     # via flask
