@@ -61,7 +61,7 @@ services:
       - target: 5003
         published: 5003
     environment:
-      FLASK_SECRET_KEY: ${FLASK_SECRET_KEY}
+      FLASK_SECRET_KEY: some-secret-key
       REDIS_HOST: test_db
       REDIS_PORT: 6379
       FLASK_HOST: 127.0.0.1
