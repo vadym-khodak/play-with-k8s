@@ -23,35 +23,56 @@ spec:
       terminationGracePeriodSeconds: 1
       containers:
         - name: counter-pod
-          image: vaddimart/playwithk8s:5.1
+          image: vaddimart/playwithk8s:be.1.0
           imagePullPolicy: Always
           ports:
             - containerPort: 5000
           env:
-            - name: FLASK_SECRET_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: mysecret
-                  key: flasksecret
             - name: REDIS_HOST
               value: redis
             - name: REDIS_PORT
               value: "6379"
-            - name: FLASK_HOST
-              value: 0.0.0.0
-            - name: FLASK_PORT
-              value: "5000"
             - name: REDIS_SLEEP_TIME
               value: "0.1"
           readinessProbe:
             httpGet:
               path: /ready
-              port: 5000
+              port: 8000
               httpHeaders:
                 - name: Custom-Header
                   value: Awesome
             initialDelaySeconds: 3
             periodSeconds: 3
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fe-deploy
+  labels:
+    app: web-app
+spec:
+  selector:
+    matchLabels:
+      app: web-app
+  replicas: 5
+  minReadySeconds: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: web-app
+    spec:
+      terminationGracePeriodSeconds: 1
+      containers:
+        - name: fe-pod
+          image: vaddimart/playwithk8s:fe.1.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
 ---
 apiVersion: apps/v1
 kind: Deployment
