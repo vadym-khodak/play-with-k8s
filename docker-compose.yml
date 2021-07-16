@@ -1,28 +1,39 @@
-version: "3.5"
+version: "3.8"
 
 networks:
   app-net:
-  test-net:
-
-volumes:
-  app-vol:
 
 services:
-  web-app:
-    build: .
-    command: python app.py
+  server:
+    build:
+      context: server/
+      dockerfile: Dockerfile
+    command: uvicorn main:app --host 0.0.0.0 --port 8000
     ports:
-      - target: 5000
-        published: 5000
+      - target: 8000
+        published: 8000
     environment:
-      FLASK_SECRET_KEY: ${FLASK_SECRET_KEY}
       REDIS_HOST: redis
       REDIS_PORT: 6379
-      FLASK_HOST: 0.0.0.0
-      FLASK_PORT: 5000
-
     networks:
       - app-net
+    depends_on:
+      - redis
+
+  client:
+    container_name: client
+    build:
+      context: client/
+      dockerfile: Dockerfile.development
+    ports:
+      - 3000:3000
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    networks:
+      - app-net
+    depends_on:
+      - server
+
   redis:
     image: "redis:alpine"
     networks:
@@ -40,7 +51,7 @@ services:
   test:
     build:
       context: .
-      dockerfile: Dockerfile.test
+      dockerfile: flask_server/Dockerfile.test
     ports:
       - target: 5003
         published: 5003
