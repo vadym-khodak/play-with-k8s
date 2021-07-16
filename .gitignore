@@ -1,5 +1,6 @@
 .idea/
-client/
+client/build/
+client/node_modules/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
